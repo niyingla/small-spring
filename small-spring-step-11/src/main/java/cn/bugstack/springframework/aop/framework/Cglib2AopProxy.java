@@ -44,6 +44,7 @@ public class Cglib2AopProxy implements AopProxy {
 
         @Override
         public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+            System.out.println("intercept method");
             CglibMethodInvocation methodInvocation = new CglibMethodInvocation(advised.getTargetSource().getTarget(), method, objects, methodProxy);
             if (advised.getMethodMatcher().matches(method, advised.getTargetSource().getTarget().getClass())) {
                 return advised.getMethodInterceptor().invoke(methodInvocation);
@@ -63,6 +64,7 @@ public class Cglib2AopProxy implements AopProxy {
 
         @Override
         public Object proceed() throws Throwable {
+            System.out.println("proceed method");
             return this.methodProxy.invoke(this.target, this.arguments);
         }
 

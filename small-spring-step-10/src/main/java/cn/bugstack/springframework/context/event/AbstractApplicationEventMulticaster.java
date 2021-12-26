@@ -51,7 +51,9 @@ public abstract class AbstractApplicationEventMulticaster implements Application
      */
     protected Collection<ApplicationListener> getApplicationListeners(ApplicationEvent event) {
         LinkedList<ApplicationListener> allListeners = new LinkedList<ApplicationListener>();
+        //循环监听器列表
         for (ApplicationListener<ApplicationEvent> listener : applicationListeners) {
+            //添加监听器
             if (supportsEvent(listener, event)) allListeners.add(listener);
         }
         return allListeners;
@@ -62,15 +64,16 @@ public abstract class AbstractApplicationEventMulticaster implements Application
      */
     protected boolean supportsEvent(ApplicationListener<ApplicationEvent> applicationListener, ApplicationEvent event) {
         Class<? extends ApplicationListener> listenerClass = applicationListener.getClass();
-
         // 按照 CglibSubclassingInstantiationStrategy、SimpleInstantiationStrategy 不同的实例化类型，需要判断后获取目标 class
         Class<?> targetClass = ClassUtils.isCglibProxyClass(listenerClass) ? listenerClass.getSuperclass() : listenerClass;
+        //获取类或接口实现的接口
         Type genericInterface = targetClass.getGenericInterfaces()[0];
-
+        //获取类上泛型
         Type actualTypeArgument = ((ParameterizedType) genericInterface).getActualTypeArguments()[0];
         String className = actualTypeArgument.getTypeName();
         Class<?> eventClassName;
         try {
+            //重新加载类型的class
             eventClassName = Class.forName(className);
         } catch (ClassNotFoundException e) {
             throw new BeansException("wrong event class name: " + className);

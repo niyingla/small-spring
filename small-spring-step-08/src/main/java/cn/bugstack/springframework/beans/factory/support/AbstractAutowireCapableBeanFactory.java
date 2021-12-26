@@ -101,17 +101,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
 
         // invokeAwareMethods
-        if (bean instanceof Aware) {
-            if (bean instanceof BeanFactoryAware) {
-                ((BeanFactoryAware) bean).setBeanFactory(this);
-            }
-            if (bean instanceof BeanClassLoaderAware){
-                ((BeanClassLoaderAware) bean).setBeanClassLoader(getBeanClassLoader());
-            }
-            if (bean instanceof BeanNameAware) {
-                ((BeanNameAware) bean).setBeanName(beanName);
-            }
-        }
+        doAutoWare(beanName, bean);
 
         // 1. 执行 BeanPostProcessor Before 处理
         Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
@@ -126,6 +116,25 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         // 2. 执行 BeanPostProcessor After 处理
         wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
         return wrappedBean;
+    }
+
+    /**
+     * 执行注入
+     * @param beanName
+     * @param bean
+     */
+    private void doAutoWare(String beanName, Object bean) {
+        if (bean instanceof Aware) {
+            if (bean instanceof BeanFactoryAware) {
+                ((BeanFactoryAware) bean).setBeanFactory(this);
+            }
+            if (bean instanceof BeanClassLoaderAware){
+                ((BeanClassLoaderAware) bean).setBeanClassLoader(getBeanClassLoader());
+            }
+            if (bean instanceof BeanNameAware) {
+                ((BeanNameAware) bean).setBeanName(beanName);
+            }
+        }
     }
 
     private void invokeInitMethods(String beanName, Object bean, BeanDefinition beanDefinition) throws Exception {

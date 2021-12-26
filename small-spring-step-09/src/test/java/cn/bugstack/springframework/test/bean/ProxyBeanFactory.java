@@ -9,6 +9,11 @@ import java.util.Map;
 
 public class ProxyBeanFactory implements FactoryBean<IUserDao> {
 
+    /**
+     * 获取bean实例的工厂 通过xml注入
+     * @return
+     * @throws Exception
+     */
     @Override
     public IUserDao getObject() throws Exception {
         InvocationHandler handler = (proxy, method, args) -> {

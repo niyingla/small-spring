@@ -39,8 +39,11 @@ public class ApiTest {
         IUserService userService = new UserService();
         // 组装代理信息
         AdvisedSupport advisedSupport = new AdvisedSupport();
+        //设置目标类
         advisedSupport.setTargetSource(new TargetSource(userService));
+        //设置拦截器
         advisedSupport.setMethodInterceptor(new UserServiceInterceptor());
+        //设置切面表达式
         advisedSupport.setMethodMatcher(new AspectJExpressionPointcut("execution(* cn.bugstack.springframework.test.bean.IUserService.*(..))"));
 
         // 代理对象(JdkDynamicAopProxy)

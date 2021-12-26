@@ -50,20 +50,32 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
             return (T) getObjectForBeanInstance(sharedInstance, name);
         }
 
+        //获取bean定义信息
         BeanDefinition beanDefinition = getBeanDefinition(name);
+        //创建bena
         Object bean = createBean(name, beanDefinition, args);
+        //重新尝试从FactoryBean获取
         return (T) getObjectForBeanInstance(bean, name);
     }
 
+    /**
+     * 获取bean实例
+     * @param beanInstance
+     * @param beanName
+     * @return
+     */
     private Object getObjectForBeanInstance(Object beanInstance, String beanName) {
+        //不是工厂bean接口
         if (!(beanInstance instanceof FactoryBean)) {
             return beanInstance;
         }
 
+        //从工厂缓存尝试获取
         Object object = getCachedObjectForFactoryBean(beanName);
 
         if (object == null) {
             FactoryBean<?> factoryBean = (FactoryBean<?>) beanInstance;
+            //直接生成
             object = getObjectFromFactoryBean(factoryBean, beanName);
         }
 
