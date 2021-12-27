@@ -45,14 +45,18 @@ public class PropertyPlaceholderConfigurer implements BeanFactoryPostProcessor {
             properties.load(resource.getInputStream());
 
             String[] beanDefinitionNames = beanFactory.getBeanDefinitionNames();
+            //循环所有beanDefinition
             for (String beanName : beanDefinitionNames) {
                 BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName);
-
+                //获取beanDefinition需要修改属性
                 PropertyValues propertyValues = beanDefinition.getPropertyValues();
+                //循环注入属性
                 for (PropertyValue propertyValue : propertyValues.getPropertyValues()) {
                     Object value = propertyValue.getValue();
                     if (!(value instanceof String)) continue;
+                    //替换value中的${} 返回properties中对应的值
                     value = resolvePlaceholder((String) value, properties);
+                    //添加属性注入到beanDefinition注入属性集合
                     propertyValues.addPropertyValue(new PropertyValue(propertyValue.getName(), value));
                 }
             }

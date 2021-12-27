@@ -43,7 +43,7 @@ public class ApiTest {
             }
         };
 
-        List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
+        List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
         beanPostProcessors.add(beanPostProcessor);
         beanPostProcessors.add(beanPostProcessor);
         beanPostProcessors.remove(beanPostProcessor);

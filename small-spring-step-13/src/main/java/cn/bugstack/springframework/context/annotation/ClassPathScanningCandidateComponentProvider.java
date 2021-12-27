@@ -15,10 +15,17 @@ import java.util.Set;
  */
 public class ClassPathScanningCandidateComponentProvider {
 
+    /**
+     * 扫描路径下的Component注解
+     * @param basePackage
+     * @return
+     */
     public Set<BeanDefinition> findCandidateComponents(String basePackage) {
         Set<BeanDefinition> candidates = new LinkedHashSet<>();
+        //通过注解扫描
         Set<Class<?>> classes = ClassUtil.scanPackageByAnnotation(basePackage, Component.class);
         for (Class<?> clazz : classes) {
+            //添加到类集合
             candidates.add(new BeanDefinition(clazz));
         }
         return candidates;

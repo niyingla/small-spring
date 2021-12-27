@@ -7,18 +7,34 @@ import cn.bugstack.springframework.beans.PropertyValues;
  */
 public class BeanDefinition {
 
+
     String SCOPE_SINGLETON = ConfigurableBeanFactory.SCOPE_SINGLETON;
 
     String SCOPE_PROTOTYPE = ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
+    /**
+     * 目标类类型
+     */
     private Class beanClass;
 
+    /**
+     * 需要填充的属性 包含 注入和@value
+     */
     private PropertyValues propertyValues;
 
+    /**
+     * 初始化方法名字
+     */
     private String initMethodName;
 
+    /**
+     * 废弃方法名字
+     */
     private String destroyMethodName;
 
+    /**
+     * 默认单例
+     */
     private String scope = SCOPE_SINGLETON;
 
     private boolean singleton = true;

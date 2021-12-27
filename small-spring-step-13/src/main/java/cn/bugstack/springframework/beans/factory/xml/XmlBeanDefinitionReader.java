@@ -78,12 +78,14 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             if (StrUtil.isEmpty(scanPath)) {
                 throw new BeansException("The value of base-package attribute can not be empty or null");
             }
+            //扫描路径
             scanPackage(scanPath);
         }
 
+        //获取xml中的bean列表
         List<Element> beanList = root.elements("bean");
+        //循环bean xml列表
         for (Element bean : beanList) {
-
             String id = bean.attributeValue("id");
             String name = bean.attributeValue("name");
             String className = bean.attributeValue("class");
@@ -130,8 +132,11 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     }
 
     private void scanPackage(String scanPath) {
+        //切分路径
         String[] basePackages = StrUtil.splitToArray(scanPath, ',');
+        //路径BeanDefinition
         ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(getRegistry());
+        //扫描路径
         scanner.doScan(basePackages);
     }
 

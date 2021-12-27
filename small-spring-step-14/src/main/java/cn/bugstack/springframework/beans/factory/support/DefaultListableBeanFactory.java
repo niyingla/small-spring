@@ -54,15 +54,25 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
         beanDefinitionMap.keySet().forEach(this::getBean);
     }
 
+    /**
+     * 根据类型获取对象
+     * @param requiredType
+     * @param <T>
+     * @return
+     * @throws BeansException
+     */
     @Override
     public <T> T getBean(Class<T> requiredType) throws BeansException {
         List<String> beanNames = new ArrayList<>();
+        //循环所有beanDefinition
         for (Map.Entry<String, BeanDefinition> entry : beanDefinitionMap.entrySet()) {
             Class beanClass = entry.getValue().getBeanClass();
+            //判断是否符合类型
             if (requiredType.isAssignableFrom(beanClass)) {
                 beanNames.add(entry.getKey());
             }
         }
+        //取第一个符合的名字获取bean
         if (1 == beanNames.size()) {
             return getBean(beanNames.get(0), requiredType);
         }

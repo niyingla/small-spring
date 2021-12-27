@@ -37,8 +37,10 @@ public class PropertyPlaceholderConfigurer implements BeanFactoryPostProcessor {
         // 加载属性文件
         try {
             DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+            //加载路径下的xml
             Resource resource = resourceLoader.getResource(location);
             Properties properties = new Properties();
+            //添加到属性
             properties.load(resource.getInputStream());
 
             String[] beanDefinitionNames = beanFactory.getBeanDefinitionNames();
@@ -48,6 +50,7 @@ public class PropertyPlaceholderConfigurer implements BeanFactoryPostProcessor {
                 PropertyValues propertyValues = beanDefinition.getPropertyValues();
                 for (PropertyValue propertyValue : propertyValues.getPropertyValues()) {
                     Object value = propertyValue.getValue();
+                    //判断类型是不是string
                     if (!(value instanceof String)) continue;
                     String strVal = (String) value;
                     StringBuilder buffer = new StringBuilder(strVal);
@@ -55,8 +58,11 @@ public class PropertyPlaceholderConfigurer implements BeanFactoryPostProcessor {
                     int stopIdx = strVal.indexOf(DEFAULT_PLACEHOLDER_SUFFIX);
                     if (startIdx != -1 && stopIdx != -1 && startIdx < stopIdx) {
                         String propKey = strVal.substring(startIdx + 2, stopIdx);
+                        //取出属性
                         String propVal = properties.getProperty(propKey);
+                        //替换 ${}
                         buffer.replace(startIdx, stopIdx + 1, propVal);
+                        //添加到注入属性
                         propertyValues.addPropertyValue(new PropertyValue(propertyValue.getName(), buffer.toString()));
                     }
                 }

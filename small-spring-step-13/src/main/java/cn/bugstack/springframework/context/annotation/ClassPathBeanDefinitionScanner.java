@@ -22,20 +22,32 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
         this.registry = registry;
     }
 
+    /**
+     * 骚猫路径下的bean注入BeanDefinition列表
+     * @param basePackages
+     */
     public void doScan(String... basePackages) {
         for (String basePackage : basePackages) {
+            //扫描路径下的Component注解
             Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
             for (BeanDefinition beanDefinition : candidates) {
                 // 解析 Bean 的作用域 singleton、prototype
                 String beanScope = resolveBeanScope(beanDefinition);
                 if (StrUtil.isNotEmpty(beanScope)) {
+                    //设置BeanDefinition的域
                     beanDefinition.setScope(beanScope);
                 }
+                //注册BeanDefinition
                 registry.registerBeanDefinition(determineBeanName(beanDefinition), beanDefinition);
             }
         }
     }
 
+    /**
+     * 尝试获取类的 Scope（单例、多例） 默认是空
+     * @param beanDefinition
+     * @return
+     */
     private String resolveBeanScope(BeanDefinition beanDefinition) {
         Class<?> beanClass = beanDefinition.getBeanClass();
         Scope scope = beanClass.getAnnotation(Scope.class);

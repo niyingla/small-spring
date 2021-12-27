@@ -95,6 +95,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
     public String resolveEmbeddedValue(String value) {
         String result = value;
         for (StringValueResolver resolver : this.embeddedValueResolvers) {
+            //解析value
             result = resolver.resolveStringValue(result);
         }
         return result;

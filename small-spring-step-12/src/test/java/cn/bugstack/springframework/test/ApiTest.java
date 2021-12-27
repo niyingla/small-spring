@@ -64,21 +64,22 @@ public class ApiTest {
     public void test_advisor() {
         // 目标对象
         IUserService userService = new UserService();
-
+        //创建切点类
         AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
+        //设置切面表达式
         advisor.setExpression("execution(* cn.bugstack.springframework.test.bean.IUserService.*(..))");
+        //设置切面建议类
         advisor.setAdvice(new MethodBeforeAdviceInterceptor(new UserServiceBeforeAdvice()));
 
         ClassFilter classFilter = advisor.getPointcut().getClassFilter();
+        //判断是否符合切点规则
         if (classFilter.matches(userService.getClass())) {
             AdvisedSupport advisedSupport = new AdvisedSupport();
-
-            TargetSource targetSource = new TargetSource(userService);
-            advisedSupport.setTargetSource(targetSource);
+            advisedSupport.setTargetSource(new TargetSource(userService));
             advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());
             advisedSupport.setMethodMatcher(advisor.getPointcut().getMethodMatcher());
             advisedSupport.setProxyTargetClass(true); // false/true，JDK动态代理、CGlib动态代理
-
+            //创建代理类
             IUserService proxy = (IUserService) new ProxyFactory(advisedSupport).getProxy();
             System.out.println("测试结果：" + proxy.queryUserInfo());
         }
