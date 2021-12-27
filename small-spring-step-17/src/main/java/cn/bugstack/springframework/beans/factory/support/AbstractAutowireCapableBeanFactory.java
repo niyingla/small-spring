@@ -5,16 +5,12 @@ import cn.bugstack.springframework.beans.PropertyValue;
 import cn.bugstack.springframework.beans.PropertyValues;
 import cn.bugstack.springframework.beans.factory.*;
 import cn.bugstack.springframework.beans.factory.config.*;
-import cn.bugstack.springframework.context.ApplicationContextAware;
 import cn.bugstack.springframework.core.convert.ConversionService;
-import cn.bugstack.springframework.util.ClassUtils;
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.convert.BasicType;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.TypeUtil;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
@@ -36,12 +32,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         if (null != bean) {
             return bean;
         }
-
+        //不返回再创建
         return doCreateBean(beanName, beanDefinition, args);
     }
 
     protected Object doCreateBean(String beanName, BeanDefinition beanDefinition, Object[] args) {
-        Object bean = null;
+        Object bean;
         try {
             // 实例化 Bean
             bean = createBeanInstance(beanDefinition, beanName, args);
@@ -134,17 +130,33 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         }
     }
 
+
+    /**
+     * 实例化前解决
+     * @param beanName
+     * @param beanDefinition
+     * @return
+     */
     protected Object resolveBeforeInstantiation(String beanName, BeanDefinition beanDefinition) {
+        //前置处理
         Object bean = applyBeanPostProcessorsBeforeInstantiation(beanDefinition.getBeanClass(), beanName);
         if (null != bean) {
+            //后置处理
             bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
         }
         return bean;
     }
 
+    /**
+     * 执行初始化前方法
+     * @param beanClass
+     * @param beanName
+     * @return
+     */
     protected Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, String beanName) {
         for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
             if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+                //在 Bean 对象执行初始化方法之前，执行此方法
                 Object result = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessBeforeInstantiation(beanClass, beanName);
                 if (null != result) return result;
             }
@@ -161,6 +173,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         }
     }
 
+    /**
+     * 通过构造方法实例化
+     * @param beanDefinition
+     * @param beanName
+     * @param args
+     * @return
+     */
     protected Object createBeanInstance(BeanDefinition beanDefinition, String beanName, Object[] args) {
         Constructor constructorToUse = null;
         Class<?> beanClass = beanDefinition.getBeanClass();
@@ -276,6 +295,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         return result;
     }
 
+    /**
+     * 执行初始化方法之后方法
+     * @param existingBean
+     * @param beanName
+     * @return
+     * @throws BeansException
+     */
     @Override
     public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName) throws BeansException {
         Object result = existingBean;

@@ -1,7 +1,7 @@
 package cn.bugstack.springframework.beans.factory.config;
 
 /**
-
+ *
  * <p>
  * 单例注册表
  */
@@ -12,4 +12,3 @@ public interface SingletonBeanRegistry {
     void registerSingleton(String beanName, Object singletonObject);
 
 }
-                                                

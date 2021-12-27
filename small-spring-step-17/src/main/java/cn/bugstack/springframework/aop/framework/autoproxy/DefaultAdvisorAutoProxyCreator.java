@@ -45,6 +45,11 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
         return true;
     }
 
+    /**
+     * 是否是基础类
+     * @param beanClass
+     * @return
+     */
     private boolean isInfrastructureClass(Class<?> beanClass) {
         return Advice.class.isAssignableFrom(beanClass) || Pointcut.class.isAssignableFrom(beanClass) || Advisor.class.isAssignableFrom(beanClass);
     }
@@ -63,9 +68,17 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
         return bean;
     }
 
+    /**
+     *
+     * @param bean
+     * @param beanName
+     * @return
+     */
     protected Object wrapIfNecessary(Object bean, String beanName) {
+        //是否是基础类 比如切面基础类 Pointcut
         if (isInfrastructureClass(bean.getClass())) return bean;
 
+        //获取切点类
         Collection<AspectJExpressionPointcutAdvisor> advisors = beanFactory.getBeansOfType(AspectJExpressionPointcutAdvisor.class).values();
 
         for (AspectJExpressionPointcutAdvisor advisor : advisors) {
@@ -74,7 +87,7 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
             if (!classFilter.matches(bean.getClass())) continue;
 
             AdvisedSupport advisedSupport = new AdvisedSupport();
-
+            //包装切面类
             TargetSource targetSource = new TargetSource(bean);
             advisedSupport.setTargetSource(targetSource);
             advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());

@@ -3,7 +3,7 @@ package cn.bugstack.springframework.beans.factory;
 import cn.bugstack.springframework.beans.BeansException;
 
 /**
-
+ * bean生产工长
  */
 public interface BeanFactory {
 

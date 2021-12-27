@@ -42,6 +42,11 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 
     private final Map<String, DisposableBean> disposableBeans = new LinkedHashMap<>();
 
+    /**
+     * 从缓存中尝试获取对象
+     * @param beanName
+     * @return
+     */
     @Override
     public Object getSingleton(String beanName) {
         Object singletonObject = singletonObjects.get(beanName);
@@ -61,6 +66,7 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
         return singletonObject;
     }
 
+    @Override
     public void registerSingleton(String beanName, Object singletonObject) {
         singletonObjects.put(beanName, singletonObject);
         earlySingletonObjects.remove(beanName);

@@ -1,7 +1,6 @@
 package cn.bugstack.springframework.beans.factory.support;
 
 import cn.bugstack.springframework.beans.BeansException;
-import cn.bugstack.springframework.beans.factory.BeanFactory;
 import cn.bugstack.springframework.beans.factory.FactoryBean;
 import cn.bugstack.springframework.beans.factory.config.BeanDefinition;
 import cn.bugstack.springframework.beans.factory.config.BeanPostProcessor;
@@ -65,9 +64,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
             // 如果是 FactoryBean，则需要调用 FactoryBean#getObject
             return (T) getObjectForBeanInstance(sharedInstance, name);
         }
-
+        //获取对象BeanDefinition
         BeanDefinition beanDefinition = getBeanDefinition(name);
+        //创建对象
         Object bean = createBean(name, beanDefinition, args);
+        //
         return (T) getObjectForBeanInstance(bean, name);
     }
 
