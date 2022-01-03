@@ -101,6 +101,12 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
         return bean;
     }
 
+    /**
+     * 获取早期暴露引用
+     * @param bean
+     * @param beanName
+     * @return
+     */
     @Override
     public Object getEarlyBeanReference(Object bean, String beanName) {
         earlyProxyReferences.add(beanName);

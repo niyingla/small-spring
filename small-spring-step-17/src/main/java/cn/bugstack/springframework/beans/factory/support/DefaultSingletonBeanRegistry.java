@@ -40,10 +40,12 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
      */
     private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<String, ObjectFactory<?>>();
 
+    //丢弃方法队列
     private final Map<String, DisposableBean> disposableBeans = new LinkedHashMap<>();
 
     /**
      * 从缓存中尝试获取对象
+     * 优先一级、然后二级、最次三级
      * @param beanName
      * @return
      */

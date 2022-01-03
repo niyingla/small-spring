@@ -8,7 +8,7 @@ import cn.bugstack.springframework.beans.PropertyValues;
  * and a callback after instantiation but before explicit properties are set or
  * autowiring occurs.
  * <p>
-
+ * BeanPostProcessor子接口，它添加了一个实例化之前的回调，以及一个实例化之后但在显式属性设置或自动装配发生之前的回调
  */
 public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 
