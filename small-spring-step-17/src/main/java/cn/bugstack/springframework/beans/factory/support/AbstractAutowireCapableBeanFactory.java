@@ -132,7 +132,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 
     /**
-     * 实例化前解决
+     * 实例化前处理
      * @param beanName
      * @param beanDefinition
      * @return
@@ -155,7 +155,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
      */
     protected Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, String beanName) {
         for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
-            if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+            if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor)  {
                 //在 Bean 对象执行初始化方法之前，执行此方法
                 Object result = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessBeforeInstantiation(beanClass, beanName);
                 if (null != result) return result;

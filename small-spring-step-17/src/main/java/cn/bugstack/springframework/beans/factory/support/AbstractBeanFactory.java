@@ -59,6 +59,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
     protected abstract boolean containsBeanDefinition(String beanName);
 
     protected <T> T doGetBean(final String name, final Object[] args) {
+        //从三、二、一级缓存中获取对象
         Object sharedInstance = getSingleton(name);
         if (sharedInstance != null) {
             // 如果是 FactoryBean，则需要调用 FactoryBean#getObject
@@ -68,19 +69,28 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
         BeanDefinition beanDefinition = getBeanDefinition(name);
         //创建对象
         Object bean = createBean(name, beanDefinition, args);
-        //
+        //判断是否是需要工厂获取实例
         return (T) getObjectForBeanInstance(bean, name);
     }
 
+    /**
+     * 从工厂类获取实例
+     * @param beanInstance
+     * @param beanName
+     * @return
+     */
     private Object getObjectForBeanInstance(Object beanInstance, String beanName) {
         if (!(beanInstance instanceof FactoryBean)) {
             return beanInstance;
         }
 
+        //尝试从缓存工厂对象中获取对象
         Object object = getCachedObjectForFactoryBean(beanName);
 
+        //不存在 直接生成
         if (object == null) {
             FactoryBean<?> factoryBean = (FactoryBean<?>) beanInstance;
+            //从工厂获取对象
             object = getObjectFromFactoryBean(factoryBean, beanName);
         }
 

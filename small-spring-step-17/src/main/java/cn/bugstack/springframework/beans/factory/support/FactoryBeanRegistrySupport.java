@@ -25,15 +25,24 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
         return (object != NULL_OBJECT ? object : null);
     }
 
+    /**
+     * 从工厂获取对象
+     * @param factory
+     * @param beanName
+     * @return
+     */
     protected Object getObjectFromFactoryBean(FactoryBean factory, String beanName) {
+        //是否是单例
         if (factory.isSingleton()) {
             Object object = this.factoryBeanObjectCache.get(beanName);
             if (object == null) {
+                //从厂类获取对象
                 object = doGetObjectFromFactoryBean(factory, beanName);
                 this.factoryBeanObjectCache.put(beanName, (object != null ? object : NULL_OBJECT));
             }
             return (object != NULL_OBJECT ? object : null);
         } else {
+            //不是单例 直接生成一个
             return doGetObjectFromFactoryBean(factory, beanName);
         }
     }
