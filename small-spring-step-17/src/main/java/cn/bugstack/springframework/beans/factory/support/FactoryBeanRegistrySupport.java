@@ -17,6 +17,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 
     /**
      * Cache of singleton objects created by FactoryBeans: FactoryBean name --> object
+     * FactoryBeans 创建的单例对象的缓存：FactoryBean 名称 --> 对象
      */
     private final Map<String, Object> factoryBeanObjectCache = new ConcurrentHashMap<String, Object>();
 
@@ -25,8 +26,9 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
         return (object != NULL_OBJECT ? object : null);
     }
 
+
     /**
-     * 从工厂获取对象
+     * 获取工厂中的对象
      * @param factory
      * @param beanName
      * @return
@@ -38,6 +40,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
             if (object == null) {
                 //从厂类获取对象
                 object = doGetObjectFromFactoryBean(factory, beanName);
+                //加入缓存
                 this.factoryBeanObjectCache.put(beanName, (object != null ? object : NULL_OBJECT));
             }
             return (object != NULL_OBJECT ? object : null);
@@ -47,6 +50,12 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
         }
     }
 
+    /**
+     * 直接调用工厂方法获取
+     * @param factory
+     * @param beanName
+     * @return
+     */
     private Object doGetObjectFromFactoryBean(final FactoryBean factory, final String beanName){
         try {
             return factory.getObject();
