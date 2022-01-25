@@ -23,8 +23,13 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
         this.registry = registry;
     }
 
+    /**
+     * 扫描路径下的对象
+     * @param basePackages
+     */
     public void doScan(String... basePackages) {
         for (String basePackage : basePackages) {
+            //找到路径下得@Component注解对象
             Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
             for (BeanDefinition beanDefinition : candidates) {
                 // 解析 Bean 的作用域 singleton、prototype
@@ -32,7 +37,10 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
                 if (StrUtil.isNotEmpty(beanScope)) {
                     beanDefinition.setScope(beanScope);
                 }
-                registry.registerBeanDefinition(determineBeanName(beanDefinition), beanDefinition);
+                //获取bean名称
+                String beanName = determineBeanName(beanDefinition);
+                //注册
+                registry.registerBeanDefinition(beanName, beanDefinition);
             }
         }
 
@@ -40,6 +48,11 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
         registry.registerBeanDefinition("cn.bugstack.springframework.context.annotation.internalAutowiredAnnotationProcessor", new BeanDefinition(AutowiredAnnotationBeanPostProcessor.class));
     }
 
+    /**
+     * 获取bean作用域
+     * @param beanDefinition
+     * @return
+     */
     private String resolveBeanScope(BeanDefinition beanDefinition) {
         Class<?> beanClass = beanDefinition.getBeanClass();
         Scope scope = beanClass.getAnnotation(Scope.class);
@@ -47,6 +60,11 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
         return StrUtil.EMPTY;
     }
 
+    /**
+     * 获取bean名称
+     * @param beanDefinition
+     * @return
+     */
     private String determineBeanName(BeanDefinition beanDefinition) {
         Class<?> beanClass = beanDefinition.getBeanClass();
         Component component = beanClass.getAnnotation(Component.class);
