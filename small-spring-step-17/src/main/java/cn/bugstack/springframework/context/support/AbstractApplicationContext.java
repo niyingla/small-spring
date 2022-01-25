@@ -66,7 +66,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         finishRefresh();
     }
 
-    // 设置类型转换器、提前实例化单例Bean对象
+    /**
+     * 设置类型转换器、提前实例化单例Bean对象
+     * @param beanFactory
+     */
     protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory) {
         // 设置类型转换器
         if (beanFactory.containsBean("conversionService")) {

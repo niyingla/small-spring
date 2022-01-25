@@ -59,8 +59,9 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
                 ObjectFactory<?> singletonFactory = singletonFactories.get(beanName);
                 if (singletonFactory != null) {
                     singletonObject = singletonFactory.getObject();
-                    // 把三级缓存中的代理对象中的真实对象获取出来，放入二级缓存中
+                    // 把三级缓存中的代理工厂的对象获取出来，放入二级缓存中
                     earlySingletonObjects.put(beanName, singletonObject);
+                    //删除三级缓存中的对象工厂
                     singletonFactories.remove(beanName);
                 }
             }
@@ -75,6 +76,11 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
         singletonFactories.remove(beanName);
     }
 
+    /**
+     * 加入三级缓存
+     * @param beanName
+     * @param singletonFactory
+     */
     protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFactory){
         if (!this.singletonObjects.containsKey(beanName)) {
             this.singletonFactories.put(beanName, singletonFactory);

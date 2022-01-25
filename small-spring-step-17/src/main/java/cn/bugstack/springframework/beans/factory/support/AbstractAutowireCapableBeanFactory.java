@@ -179,6 +179,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         return null;
     }
 
+    /**
+     * 注册实现了 DisposableBean 接口的 Bean 对象
+     * @param beanName
+     * @param bean
+     * @param beanDefinition
+     */
     protected void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {
         // 非 Singleton 类型的 Bean 不执行销毁方法
         if (!beanDefinition.isSingleton()) return;
