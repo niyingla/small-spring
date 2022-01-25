@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Bean definition reader for XML bean definitions.
  * <p>
-
+ * 读取xml中的BeanDefinition
  */
 public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
@@ -34,6 +34,11 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         super(registry, resourceLoader);
     }
 
+    /**
+     * 加载流中的BeanDefinition
+     * @param resource
+     * @throws BeansException
+     */
     @Override
     public void loadBeanDefinitions(Resource resource) throws BeansException {
         try {
@@ -53,6 +58,11 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         }
     }
 
+    /**
+     * 加载路径下的BeanDefinition
+     * @param location
+     * @throws BeansException
+     */
     @Override
     public void loadBeanDefinitions(String location) throws BeansException {
         ResourceLoader resourceLoader = getResourceLoader();

@@ -84,8 +84,16 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     }
 
 
+    /**
+     * 刷新bean工厂并加载BeanDefinition
+     * @throws BeansException
+     */
     protected abstract void refreshBeanFactory() throws BeansException;
 
+    /**
+     * 获取bean工厂
+     * @return
+     */
     protected abstract ConfigurableListableBeanFactory getBeanFactory();
 
     /**

@@ -19,12 +19,18 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableA
     @Override
     protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) {
         XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory, this);
+        //获取本地配置路径
         String[] configLocations = getConfigLocations();
         if (null != configLocations){
+            //循环加载路径下的配置，组装beanDefinition
             beanDefinitionReader.loadBeanDefinitions(configLocations);
         }
     }
 
+    /**
+     * 获取本地配置路径
+     * @return
+     */
     protected abstract String[] getConfigLocations();
 
 }
