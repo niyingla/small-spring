@@ -91,7 +91,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
      */
     private void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
         Map<String, BeanFactoryPostProcessor> beanFactoryPostProcessorMap = beanFactory.getBeansOfType(BeanFactoryPostProcessor.class);
+        //BeanFactoryPostProcessor 提供修改 BeanDefinition 属性的机制
         for (BeanFactoryPostProcessor beanFactoryPostProcessor : beanFactoryPostProcessorMap.values()) {
+            //例如 修改对象注入的属性为properties 中的值
             beanFactoryPostProcessor.postProcessBeanFactory(beanFactory);
         }
     }
@@ -102,7 +104,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
      */
     private void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) {
         Map<String, BeanPostProcessor> beanPostProcessorMap = beanFactory.getBeansOfType(BeanPostProcessor.class);
+        //BeanPostProcessor 用于修改新实例化 Bean 对象的扩展点
         for (BeanPostProcessor beanPostProcessor : beanPostProcessorMap.values()) {
+            //例如 @Autowired @Value 注入
+            //例如 默认注入applicationContext
             beanFactory.addBeanPostProcessor(beanPostProcessor);
         }
     }
