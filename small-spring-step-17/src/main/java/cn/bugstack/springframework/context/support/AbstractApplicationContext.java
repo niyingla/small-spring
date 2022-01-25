@@ -31,6 +31,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
     public static final String APPLICATION_EVENT_MULTICASTER_BEAN_NAME = "applicationEventMulticaster";
 
+    /**
+     * 事件传播组件
+     */
     private ApplicationEventMulticaster applicationEventMulticaster;
 
     @Override
@@ -93,6 +96,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         }
     }
 
+    /**
+     * 从bean工厂中获取获取BeanPostProcessor 类型对象，注入到BeanPostProcessor列表
+     * @param beanFactory
+     */
     private void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) {
         Map<String, BeanPostProcessor> beanPostProcessorMap = beanFactory.getBeansOfType(BeanPostProcessor.class);
         for (BeanPostProcessor beanPostProcessor : beanPostProcessorMap.values()) {
@@ -100,6 +107,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         }
     }
 
+    /**
+     * 初始化事件传播组件
+     */
     private void initApplicationEventMulticaster() {
         ConfigurableListableBeanFactory beanFactory = getBeanFactory();
         applicationEventMulticaster = new SimpleApplicationEventMulticaster(beanFactory);

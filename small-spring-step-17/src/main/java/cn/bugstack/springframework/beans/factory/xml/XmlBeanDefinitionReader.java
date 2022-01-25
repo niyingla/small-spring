@@ -38,6 +38,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     public void loadBeanDefinitions(Resource resource) throws BeansException {
         try {
             try (InputStream inputStream = resource.getInputStream()) {
+                //解析文件流，注入benDefinition
                 doLoadBeanDefinitions(inputStream);
             }
         } catch (IOException | ClassNotFoundException | DocumentException e) {
@@ -59,6 +60,11 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         loadBeanDefinitions(resource);
     }
 
+    /**
+     * 循环加载路径下的配置，组装beanDefinition
+     * @param locations
+     * @throws BeansException
+     */
     @Override
     public void loadBeanDefinitions(String... locations) throws BeansException {
         for (String location : locations) {
