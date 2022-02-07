@@ -7,7 +7,15 @@
     <bean id="husband" class="cn.bugstack.springframework.test.bean.Husband">
         <property name="wifiName" value="你猜"/>
         <property name="marriageDate" value="2021-08-08"/>
+        <property name="wife" ref="wife"/>
     </bean>
+
+
+    <bean id="wife" class="cn.bugstack.springframework.test.bean.Wife">
+        <property name="husband" ref="husband"/>
+    </bean>
+
+    <bean id="husbandMother" class="cn.bugstack.springframework.test.bean.HusbandMother"/>
 
     <bean id="conversionService" class="cn.bugstack.springframework.context.support.ConversionServiceFactoryBean">
         <property name="converters" ref="converters"/>
