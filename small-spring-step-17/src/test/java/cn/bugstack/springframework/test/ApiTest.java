@@ -4,6 +4,7 @@ import cn.bugstack.springframework.context.support.ClassPathXmlApplicationContex
 import cn.bugstack.springframework.core.convert.converter.Converter;
 import cn.bugstack.springframework.core.convert.support.StringToNumberConverterFactory;
 import cn.bugstack.springframework.test.bean.Husband;
+import cn.bugstack.springframework.test.bean.MyBean;
 import cn.bugstack.springframework.test.converter.StringToIntegerConverter;
 import org.junit.Test;
 
@@ -17,6 +18,8 @@ public class ApiTest {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
         Husband husband = applicationContext.getBean("husband", Husband.class);
         System.out.println("测试结果：" + husband);
+        MyBean myBean = applicationContext.getBean("myBean", MyBean.class);
+        System.out.println("测试结果：" + myBean);
     }
 
     @Test
