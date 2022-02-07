@@ -36,6 +36,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
     protected Object getObjectFromFactoryBean(FactoryBean factory, String beanName) {
         //是否是单例
         if (factory.isSingleton()) {
+            //从缓存的工厂单例对象记录中尝试获取
             Object object = this.factoryBeanObjectCache.get(beanName);
             if (object == null) {
                 //从厂类获取对象

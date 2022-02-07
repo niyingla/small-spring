@@ -15,10 +15,24 @@ import cn.bugstack.springframework.beans.factory.config.ConfigurableBeanFactory;
  */
 public interface ConfigurableListableBeanFactory extends ListableBeanFactory, AutowireCapableBeanFactory, ConfigurableBeanFactory {
 
+    /**
+     * 获取BeanDefinition
+     * @param beanName
+     * @return
+     * @throws BeansException
+     */
     BeanDefinition getBeanDefinition(String beanName) throws BeansException;
 
+    /**
+     * 提前实例化所有单例对象
+     * @throws BeansException
+     */
     void preInstantiateSingletons() throws BeansException;
 
+    /**
+     * 添加Bean后处理
+     * @param beanPostProcessor
+     */
     @Override
     void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
 

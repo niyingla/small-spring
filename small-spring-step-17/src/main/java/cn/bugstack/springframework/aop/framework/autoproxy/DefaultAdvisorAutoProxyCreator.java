@@ -69,13 +69,13 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
     }
 
     /**
-     *
+     * 必要时进行包装
      * @param bean
      * @param beanName
      * @return
      */
     protected Object wrapIfNecessary(Object bean, String beanName) {
-        //是否是基础类 比如切面基础类 Pointcut
+        //是否是基础类 比如切面基础类 Pointcut 已经是就直接返回
         if (isInfrastructureClass(bean.getClass())) return bean;
 
         //获取切点类
@@ -109,7 +109,9 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
      */
     @Override
     public Object getEarlyBeanReference(Object bean, String beanName) {
+        //早期暴露代理引用集合 添加记录
         earlyProxyReferences.add(beanName);
+        //返回包装代理类
         return wrapIfNecessary(bean, beanName);
     }
 

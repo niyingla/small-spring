@@ -52,7 +52,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             // 处理循环依赖，将实例化后的Bean对象提前放入缓存中暴露出来
             if (beanDefinition.isSingleton()) {
                 Object finalBean = bean;
-                addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, beanDefinition, finalBean));
+                //创建对象工厂 用于获取提前暴露对象
+                ObjectFactory objectFactory =  () -> getEarlyBeanReference(beanName, beanDefinition, finalBean);
+                //加入单例工厂
+                addSingletonFactory(beanName, objectFactory);
             }
 
             // 实例化后判断
@@ -78,6 +81,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         if (beanDefinition.isSingleton()) {
             // 获取代理对象
             exposedObject = getSingleton(beanName);
+            //注册一级缓存
             registerSingleton(beanName, exposedObject);
         }
         return exposedObject;
@@ -85,7 +89,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
     /**
-     *
+     * 获取提前暴露Bean 引用
      * @param beanName
      * @param beanDefinition
      * @param bean
@@ -93,8 +97,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
      */
     protected Object getEarlyBeanReference(String beanName, BeanDefinition beanDefinition, Object bean) {
         Object exposedObject = bean;
+        //循环所有beanPost
         for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+            //判断是否是 InstantiationAwareBeanPostProcessor
+            //它添加了一个实例化之前的回调，以及一个实例化之后但在显式属性设置或自动装配发生之前的回调
             if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+                //返回包装代理类
                 exposedObject = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).getEarlyBeanReference(exposedObject, beanName);
                 if (null == exposedObject) return exposedObject;
             }
