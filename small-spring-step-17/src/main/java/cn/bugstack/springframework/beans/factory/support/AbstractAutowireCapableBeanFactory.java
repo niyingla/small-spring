@@ -19,10 +19,13 @@ import java.lang.reflect.Method;
  * Implements the {@link cn.bugstack.springframework.beans.factory.config.AutowireCapableBeanFactory}
  * interface in addition to AbstractBeanFactory's {@link #createBean} method.
  * <p>
-
+ * 抽象 Autowire 能力 Bean 工厂
  */
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
 
+    /**
+     * 简单的实例化策略
+     */
     private InstantiationStrategy instantiationStrategy = new SimpleInstantiationStrategy();
 
     @Override
@@ -48,7 +51,6 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         try {
             // 实例化 Bean
             bean = createBeanInstance(beanDefinition, beanName, args);
-
             // 处理循环依赖，将实例化后的Bean对象提前放入缓存中暴露出来
             if (beanDefinition.isSingleton()) {
                 Object finalBean = bean;
@@ -57,7 +59,6 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
                 //加入单例工厂
                 addSingletonFactory(beanName, objectFactory);
             }
-
             // 实例化后判断
             boolean continueWithPropertyPopulation = applyBeanPostProcessorsAfterInstantiation(beanName, bean);
             if (!continueWithPropertyPopulation) {
@@ -72,10 +73,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         } catch (Exception e) {
             throw new BeansException("Instantiation of bean failed", e);
         }
-
         // 注册实现了 DisposableBean 接口的 Bean 对象
         registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
-
         // 判断 SCOPE_SINGLETON、SCOPE_PROTOTYPE
         Object exposedObject = bean;
         if (beanDefinition.isSingleton()) {
@@ -305,6 +304,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         return wrappedBean;
     }
 
+    /**
+     * 反射执行初始化方法
+     * @param beanName
+     * @param bean
+     * @param beanDefinition
+     * @throws Exception
+     */
     private void invokeInitMethods(String beanName, Object bean, BeanDefinition beanDefinition) throws Exception {
         // 1. 实现接口 InitializingBean
         if (bean instanceof InitializingBean) {
