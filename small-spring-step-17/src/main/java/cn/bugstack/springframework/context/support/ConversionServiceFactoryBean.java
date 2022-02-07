@@ -19,7 +19,6 @@ import java.util.Set;
  *
  * 提供创建 ConversionService 工厂
  *
-
  */
 public class ConversionServiceFactoryBean implements FactoryBean<ConversionService>, InitializingBean {
 
@@ -48,6 +47,11 @@ public class ConversionServiceFactoryBean implements FactoryBean<ConversionServi
         registerConverters(converters, conversionService);
     }
 
+    /**
+     * 注册转化器
+     * @param converters
+     * @param registry
+     */
     private void registerConverters(Set<?> converters, ConverterRegistry registry) {
         if (converters != null) {
             for (Object converter : converters) {

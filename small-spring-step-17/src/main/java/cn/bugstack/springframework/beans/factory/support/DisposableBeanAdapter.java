@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  * Adapter that implements the {@link DisposableBean} and {@link Runnable} interfaces
  * performing various destruction steps on a given bean instance:
  * <p>
-
+ * 一次性 Bean 适配器
  */
 public class DisposableBeanAdapter implements DisposableBean {
 
@@ -40,7 +40,7 @@ public class DisposableBeanAdapter implements DisposableBean {
             }
             destroyMethod.invoke(bean);
         }
-        
+
     }
 
 }

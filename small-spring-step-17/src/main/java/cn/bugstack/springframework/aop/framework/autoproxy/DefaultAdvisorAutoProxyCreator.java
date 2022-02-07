@@ -35,11 +35,25 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
         this.beanFactory = (DefaultListableBeanFactory) beanFactory;
     }
 
+    /**
+     * 实例化前的后处理
+     * @param beanClass
+     * @param beanName
+     * @return
+     * @throws BeansException
+     */
     @Override
     public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
         return null;
     }
 
+    /**
+     * 是行实例化后的后处理
+     * @param bean
+     * @param beanName
+     * @return
+     * @throws BeansException
+     */
     @Override
     public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
         return true;

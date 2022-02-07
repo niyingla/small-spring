@@ -15,8 +15,9 @@ import java.util.*;
  * Indirectly implements ConverterRegistry as registration API through the
  * ConfigurableConversionService interface.
  *
+ * Base ConversionService 实现适用于大多数环境。通过 ConfigurableConversionService
+ * 接口间接实现 ConverterRegistry 作为注册 API。
  *
-
  */
 public class GenericConversionService implements ConversionService, ConverterRegistry {
 
@@ -60,22 +61,40 @@ public class GenericConversionService implements ConversionService, ConverterReg
         }
     }
 
+    /**
+     * 生成对应的泛型转化器
+     * @param object
+     * @return
+     */
     private GenericConverter.ConvertiblePair getRequiredTypeInfo(Object object) {
+        //获取接口类型列表
         Type[] types = object.getClass().getGenericInterfaces();
+        //获取第一个接口类型
         ParameterizedType parameterized = (ParameterizedType) types[0];
+        //获取泛型列表
         Type[] actualTypeArguments = parameterized.getActualTypeArguments();
         Class sourceType = (Class) actualTypeArguments[0];
         Class targetType = (Class) actualTypeArguments[1];
+        //生成第0个和第一个泛型转换器类
         return new GenericConverter.ConvertiblePair(sourceType, targetType);
     }
 
+    /**
+     * 获取类型转化器
+     * @param sourceType
+     * @param targetType
+     * @return
+     */
     protected GenericConverter getConverter(Class<?> sourceType, Class<?> targetType) {
         List<Class<?>> sourceCandidates = getClassHierarchy(sourceType);
         List<Class<?>> targetCandidates = getClassHierarchy(targetType);
         for (Class<?> sourceCandidate : sourceCandidates) {
             for (Class<?> targetCandidate : targetCandidates) {
+                //尝试获取当前两种的转化器类
                 GenericConverter.ConvertiblePair convertiblePair = new GenericConverter.ConvertiblePair(sourceCandidate, targetCandidate);
+                //从当前缓存的转换器map中获取
                 GenericConverter converter = converters.get(convertiblePair);
+                //存在就返回
                 if (converter != null) {
                     return converter;
                 }
@@ -84,6 +103,11 @@ public class GenericConversionService implements ConversionService, ConverterReg
         return null;
     }
 
+    /**
+     * 获取类层次结构 （一次获取父类）
+     * @param clazz
+     * @return
+     */
     private List<Class<?>> getClassHierarchy(Class<?> clazz) {
         List<Class<?>> hierarchy = new ArrayList<>();
         while (clazz != null) {

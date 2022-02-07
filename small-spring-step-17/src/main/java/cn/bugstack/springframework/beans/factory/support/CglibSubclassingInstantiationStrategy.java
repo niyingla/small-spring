@@ -7,6 +7,9 @@ import net.sf.cglib.proxy.NoOp;
 
 import java.lang.reflect.Constructor;
 
+/**
+ * Cglib实例化策略
+ */
 public class CglibSubclassingInstantiationStrategy implements InstantiationStrategy {
 
     @Override

@@ -9,7 +9,6 @@ import java.util.Set;
  * <p>
  * 通用的转换接口
  * <p>
-
  */
 public interface GenericConverter {
 

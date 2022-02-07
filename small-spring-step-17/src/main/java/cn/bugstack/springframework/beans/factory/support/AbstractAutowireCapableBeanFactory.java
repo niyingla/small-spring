@@ -56,7 +56,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
                 Object finalBean = bean;
                 //创建对象工厂 用于获取提前暴露对象
                 ObjectFactory objectFactory =  () -> getEarlyBeanReference(beanName, beanDefinition, finalBean);
-                //加入单例工厂
+                //加入单例工厂三级缓存
                 addSingletonFactory(beanName, objectFactory);
             }
             // 实例化后判断
@@ -143,6 +143,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
             if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
                 InstantiationAwareBeanPostProcessor instantiationAwareBeanPostProcessor = (InstantiationAwareBeanPostProcessor) beanPostProcessor;
+                //实例化后的后处理 默认为true
                 if (!instantiationAwareBeanPostProcessor.postProcessAfterInstantiation(bean, beanName)) {
                     continueWithPropertyPopulation = false;
                     break;
@@ -212,6 +213,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         Constructor constructorToUse = null;
         Class<?> beanClass = beanDefinition.getBeanClass();
         Constructor<?>[] declaredConstructors = beanClass.getDeclaredConstructors();
+        //获取当前构造方法
         for (Constructor ctor : declaredConstructors) {
             if (null != args && ctor.getParameterTypes().length == args.length) {
                 constructorToUse = ctor;
@@ -235,15 +237,19 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
                 if (value instanceof BeanReference) {
                     // A 依赖 B，获取 B 的实例化
                     BeanReference beanReference = (BeanReference) value;
+                    //获取对象
                     value = getBean(beanReference.getBeanName());
-                }
-                // 类型转换
-                else {
+                }else {
+                    // 类型转换
                     Class<?> sourceType = value.getClass();
+                    //获取字段类型
                     Class<?> targetType = (Class<?>) TypeUtil.getFieldType(bean.getClass(), name);
+                    //获取转化service
                     ConversionService conversionService = getConversionService();
                     if (conversionService != null) {
+                        //是否可转化
                         if (conversionService.canConvert(sourceType, targetType)) {
+                            //转化类型
                             value = conversionService.convert(value, targetType);
                         }
                     }

@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
- * @author derekyi
+ * @author huohuo
  * @date 2021/1/17
  */
 public class StringToLocalDateConverter implements Converter<String, LocalDate> {
