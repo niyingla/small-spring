@@ -4,6 +4,7 @@ public class Wife {
 
     private Husband husband;
     private IMother mother; // 婆婆
+    private String token;
 
 
     public String queryHusband() {
@@ -26,4 +27,11 @@ public class Wife {
         this.mother = mother;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

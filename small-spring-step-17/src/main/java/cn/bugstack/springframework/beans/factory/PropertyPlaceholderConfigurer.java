@@ -17,7 +17,7 @@ import java.util.Properties;
  * i.e. a properties file. Useful for custom config files targeted at system
  * administrators that override bean properties configured in the application context.
  * <p>
-
+ *
  */
 public class PropertyPlaceholderConfigurer implements BeanFactoryPostProcessor {
 
@@ -45,9 +45,11 @@ public class PropertyPlaceholderConfigurer implements BeanFactoryPostProcessor {
             properties.load(resource.getInputStream());
 
             String[] beanDefinitionNames = beanFactory.getBeanDefinitionNames();
+            //循环所有beanDefinition
             for (String beanName : beanDefinitionNames) {
                 BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName);
 
+                //获取解析注入属性（注解除外这里仅包含xml中注入的字段）
                 PropertyValues propertyValues = beanDefinition.getPropertyValues();
                 for (PropertyValue propertyValue : propertyValues.getPropertyValues()) {
                     Object value = propertyValue.getValue();

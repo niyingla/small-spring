@@ -21,6 +21,7 @@
 
     <bean id="wife" class="cn.bugstack.springframework.test.bean.Wife">
         <property name="husband" ref="husband"/>
+        <property name="token" value="${token}"/>
     </bean>
 
     <bean id="husbandMother" class="cn.bugstack.springframework.test.bean.HusbandMother"/>
