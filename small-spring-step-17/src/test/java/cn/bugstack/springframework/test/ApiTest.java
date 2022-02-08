@@ -5,6 +5,7 @@ import cn.bugstack.springframework.core.convert.converter.Converter;
 import cn.bugstack.springframework.core.convert.support.StringToNumberConverterFactory;
 import cn.bugstack.springframework.test.bean.Husband;
 import cn.bugstack.springframework.test.bean.MyBean;
+import cn.bugstack.springframework.test.bean.UserService;
 import cn.bugstack.springframework.test.converter.StringToIntegerConverter;
 import org.junit.Test;
 
@@ -20,6 +21,9 @@ public class ApiTest {
         System.out.println("测试结果：" + husband);
         MyBean myBean = applicationContext.getBean("myBean", MyBean.class);
         System.out.println("测试结果：" + myBean);
+        UserService userService = applicationContext.getBean("userService", UserService.class);
+        System.out.println("测试结果：" + userService.queryUserInfo());
+
     }
 
     @Test
