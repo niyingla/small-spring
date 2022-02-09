@@ -2,7 +2,9 @@ package cn.bugstack.springframework.aop.framework.adapter;
 
 import cn.bugstack.springframework.aop.MethodAroundAdvice;
 import cn.bugstack.springframework.aop.MethodBeforeAdvice;
-import org.aopalliance.aop.Advice;
+import cn.bugstack.springframework.aop.Order;
+import cn.bugstack.springframework.util.AnnontationUtil;
+import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
 /**
@@ -10,8 +12,9 @@ import org.aopalliance.intercept.MethodInvocation;
  * Used internally by the AOP framework; application developers should not need
  * to use this class directly.
  */
-public class MethodAroundInterceptor extends AbstractMethodInterceptor {
+public class MethodAroundInterceptor implements MethodInterceptor, Order {
 
+    private MethodAroundAdvice advice;
 
     public MethodAroundInterceptor() {
     }
@@ -22,17 +25,22 @@ public class MethodAroundInterceptor extends AbstractMethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-        ((MethodAroundAdvice) this.advice).before(methodInvocation.getMethod(), methodInvocation.getArguments(), methodInvocation.getThis());
+        this.advice.before(methodInvocation.getMethod(), methodInvocation.getArguments(), methodInvocation.getThis());
         Object proceed = methodInvocation.proceed();
-        ((MethodAroundAdvice) this.advice).after(methodInvocation.getMethod(), methodInvocation.getArguments(), methodInvocation.getThis());
+        this.advice.after(methodInvocation.getMethod(), methodInvocation.getArguments(), methodInvocation.getThis());
         return proceed;
     }
 
-    public Advice getAdvice() {
+    public MethodAroundAdvice getAdvice() {
         return advice;
     }
 
     public void setAdvice(MethodAroundAdvice advice) {
         this.advice = advice;
+    }
+
+    @Override
+    public Integer getOrder() {
+        return AnnontationUtil.getOrderValue(advice.getClass());
     }
 }

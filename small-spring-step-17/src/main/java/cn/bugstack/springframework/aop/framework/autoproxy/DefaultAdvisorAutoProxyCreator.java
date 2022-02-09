@@ -3,7 +3,6 @@ package cn.bugstack.springframework.aop.framework.autoproxy;
 import cn.bugstack.springframework.aop.*;
 import cn.bugstack.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import cn.bugstack.springframework.aop.framework.ProxyFactory;
-import cn.bugstack.springframework.aop.framework.adapter.AbstractMethodInterceptor;
 import cn.bugstack.springframework.beans.BeansException;
 import cn.bugstack.springframework.beans.PropertyValues;
 import cn.bugstack.springframework.beans.factory.BeanFactory;
@@ -121,10 +120,15 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
         return bean;
     }
 
+    /**
+     * 获取aop排序
+     * @param c1
+     * @return
+     */
     private Integer getAdviceOrder(AspectJExpressionPointcutAdvisor c1) {
         Integer order = 0;
-        if (c1.getAdvice() instanceof AbstractMethodInterceptor) {
-            order = ((AbstractMethodInterceptor) c1.getAdvice()).getOrder();
+        if (c1 instanceof Order) {
+            order = ((Order) c1).getOrder();
         }
         return order;
     }
