@@ -99,17 +99,8 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
 
         //进行排序
         List<AspectJExpressionPointcutAdvisor> sortedAdvisorList =
-            CollectionUtil.sort(advisors, (c1, c2) -> {
-                Integer c1Order = 0;
-                Integer c2Order = 0;
-                if(c1.getAdvice() instanceof AbstractMethodInterceptor){
-                    c1Order= ((AbstractMethodInterceptor) c1.getAdvice()).getOrder();
-                }
-                if(c2.getAdvice() instanceof AbstractMethodInterceptor){
-                    c2Order= ((AbstractMethodInterceptor) c2.getAdvice()).getOrder();
-                }
-                return c1Order - c2Order;
-            });
+            CollectionUtil.sort(advisors, Comparator.comparingInt(this::getAdviceOrder));
+
         for (AspectJExpressionPointcutAdvisor advisor : sortedAdvisorList) {
             ClassFilter classFilter = advisor.getPointcut().getClassFilter();
             // 过滤匹配类
@@ -128,6 +119,14 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
         }
 
         return bean;
+    }
+
+    private Integer getAdviceOrder(AspectJExpressionPointcutAdvisor c1) {
+        Integer order = 0;
+        if (c1.getAdvice() instanceof AbstractMethodInterceptor) {
+            order = ((AbstractMethodInterceptor) c1.getAdvice()).getOrder();
+        }
+        return order;
     }
 
     /**
