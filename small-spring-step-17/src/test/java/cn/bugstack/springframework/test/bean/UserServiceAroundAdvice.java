@@ -6,7 +6,7 @@ import cn.bugstack.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
-@Order(-3)
+@Order(3)
 @Component("aroundAdvice")
 public class UserServiceAroundAdvice implements MethodAroundAdvice {
 

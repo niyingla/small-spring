@@ -260,6 +260,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
                  BeanUtil.setFieldValue(bean, name, value);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new BeansException("Error setting property values：" + beanName + " message：" + e);
         }
     }

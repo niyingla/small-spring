@@ -2,7 +2,7 @@ package cn.bugstack.springframework.aop.framework.adapter;
 
 import cn.bugstack.springframework.aop.MethodAroundAdvice;
 import cn.bugstack.springframework.aop.MethodBeforeAdvice;
-import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInvocation;
 
 /**
@@ -10,9 +10,8 @@ import org.aopalliance.intercept.MethodInvocation;
  * Used internally by the AOP framework; application developers should not need
  * to use this class directly.
  */
-public class MethodAroundInterceptor implements MethodInterceptor {
+public class MethodAroundInterceptor extends AbstractMethodInterceptor {
 
-    private MethodAroundAdvice advice;
 
     public MethodAroundInterceptor() {
     }
@@ -23,13 +22,13 @@ public class MethodAroundInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-        this.advice.before(methodInvocation.getMethod(), methodInvocation.getArguments(), methodInvocation.getThis());
+        ((MethodAroundAdvice) this.advice).before(methodInvocation.getMethod(), methodInvocation.getArguments(), methodInvocation.getThis());
         Object proceed = methodInvocation.proceed();
-        this.advice.after(methodInvocation.getMethod(), methodInvocation.getArguments(), methodInvocation.getThis());
+        ((MethodAroundAdvice) this.advice).after(methodInvocation.getMethod(), methodInvocation.getArguments(), methodInvocation.getThis());
         return proceed;
     }
 
-    public MethodAroundAdvice getAdvice() {
+    public Advice getAdvice() {
         return advice;
     }
 
