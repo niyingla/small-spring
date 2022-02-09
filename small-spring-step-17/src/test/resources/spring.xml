@@ -42,6 +42,10 @@
         <property name="advice" ref="afterAdvice"/>
     </bean>
 
+    <bean id="aroundMethodInterceptor" class="cn.bugstack.springframework.aop.framework.adapter.MethodAroundInterceptor">
+        <property name="advice" ref="aroundAdvice"/>
+    </bean>
+
     <bean id="beforePointcutAdvisor" class="cn.bugstack.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor">
         <property name="expression" value="execution(* cn.bugstack.springframework.test.bean.IUserService.*(..))"/>
         <property name="advice" ref="beforeMethodInterceptor"/>
@@ -50,6 +54,11 @@
     <bean id="afterPointcutAdvisor" class="cn.bugstack.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor">
         <property name="expression" value="execution(* cn.bugstack.springframework.test.bean.IUserService.*(..))"/>
         <property name="advice" ref="afterMethodInterceptor"/>
+    </bean>
+
+    <bean id="aroundPointcutAdvisor" class="cn.bugstack.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor">
+        <property name="expression" value="execution(* cn.bugstack.springframework.test.bean.IUserService.*(..))"/>
+        <property name="advice" ref="aroundMethodInterceptor"/>
     </bean>
 
     <bean id="converters" class="cn.bugstack.springframework.test.converter.ConvertersFactoryBean"/>
