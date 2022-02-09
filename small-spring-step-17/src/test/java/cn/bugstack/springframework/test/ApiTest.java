@@ -7,6 +7,7 @@ import cn.bugstack.springframework.test.bean.Husband;
 import cn.bugstack.springframework.test.bean.MyBean;
 import cn.bugstack.springframework.test.bean.UserService;
 import cn.bugstack.springframework.test.converter.StringToIntegerConverter;
+import cn.bugstack.springframework.test.event.CustomEvent;
 import org.junit.Test;
 
 /**
@@ -23,7 +24,7 @@ public class ApiTest {
         System.out.println("测试结果：" + myBean);
         UserService userService = applicationContext.getBean("userService", UserService.class);
         System.out.println("测试结果：" + userService.queryUserInfo());
-
+        applicationContext.publishEvent(new CustomEvent(applicationContext, 1019129009086763L, "成功了！"));
     }
 
     @Test
