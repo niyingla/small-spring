@@ -52,7 +52,9 @@ public abstract class AbstractApplicationEventMulticaster implements Application
     protected Collection<ApplicationListener> getApplicationListeners(ApplicationEvent event) {
         LinkedList<ApplicationListener> allListeners = new LinkedList<ApplicationListener>();
         for (ApplicationListener<ApplicationEvent> listener : applicationListeners) {
-            if (supportsEvent(listener, event)) allListeners.add(listener);
+            if (supportsEvent(listener, event)){
+                allListeners.add(listener);
+            };
         }
         return allListeners;
     }
