@@ -122,13 +122,13 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
 
     /**
      * 获取aop排序
-     * @param c1
+     * @param pointcutAdvisor
      * @return
      */
-    private Integer getAdviceOrder(AspectJExpressionPointcutAdvisor c1) {
+    private Integer getAdviceOrder(AspectJExpressionPointcutAdvisor pointcutAdvisor) {
         Integer order = 0;
-        if (c1.getAdvice() instanceof Order) {
-            order = ((Order) c1.getAdvice()).getOrder();
+        if (pointcutAdvisor.getAdvice() instanceof Order) {
+            order = ((Order) pointcutAdvisor.getAdvice()).getOrder();
         }
         return order;
     }
