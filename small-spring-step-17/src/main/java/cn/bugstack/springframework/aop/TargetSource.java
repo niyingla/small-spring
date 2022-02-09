@@ -15,8 +15,11 @@ public class TargetSource {
 
     private final Object target;
 
-    public TargetSource(Object target) {
+    private final Class targetClass;
+
+    public TargetSource(Object target, Class targetClass) {
         this.target = target;
+        this.targetClass = targetClass;
     }
 
     /**
@@ -44,4 +47,7 @@ public class TargetSource {
         return this.target;
     }
 
+    public Class getTargetIdenClass(){
+        return targetClass;
+    }
 }

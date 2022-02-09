@@ -18,6 +18,7 @@ public class UserService implements IUserService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        System.out.println("执行查询方法中...");
         return "小傅哥，100001，深圳，" + token;
     }
 

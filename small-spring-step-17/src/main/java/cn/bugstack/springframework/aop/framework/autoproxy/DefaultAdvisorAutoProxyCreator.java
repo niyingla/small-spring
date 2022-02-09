@@ -95,6 +95,8 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
         //获取切点类
         Collection<AspectJExpressionPointcutAdvisor> advisors = beanFactory.getBeansOfType(AspectJExpressionPointcutAdvisor.class).values();
 
+        Class targetClass = bean.getClass();
+
         for (AspectJExpressionPointcutAdvisor advisor : advisors) {
             ClassFilter classFilter = advisor.getPointcut().getClassFilter();
             // 过滤匹配类
@@ -102,14 +104,14 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
 
             AdvisedSupport advisedSupport = new AdvisedSupport();
             //包装切面类
-            TargetSource targetSource = new TargetSource(bean);
+            TargetSource targetSource = new TargetSource(bean, targetClass);
             advisedSupport.setTargetSource(targetSource);
             advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());
             advisedSupport.setMethodMatcher(advisor.getPointcut().getMethodMatcher());
             advisedSupport.setProxyTargetClass(true);
 
             // 返回代理对象
-            return new ProxyFactory(advisedSupport).getProxy();
+            bean = new ProxyFactory(advisedSupport).getProxy();
         }
 
         return bean;
