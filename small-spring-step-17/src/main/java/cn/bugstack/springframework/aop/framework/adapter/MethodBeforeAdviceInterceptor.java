@@ -25,7 +25,7 @@ public class MethodBeforeAdviceInterceptor implements MethodInterceptor, Order {
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-        ((MethodBeforeAdvice) this.advice).before(methodInvocation.getMethod(), methodInvocation.getArguments(), methodInvocation.getThis());
+        this.advice.before(methodInvocation.getMethod(), methodInvocation.getArguments(), methodInvocation.getThis());
         return methodInvocation.proceed();
     }
 

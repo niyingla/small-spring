@@ -24,6 +24,12 @@
         <property name="token" value="${token}"/>
     </bean>
 
+    <bean class="cn.bugstack.springframework.test.event.ContextRefreshedEventListener"/>
+
+    <bean class="cn.bugstack.springframework.test.event.CustomEventListener"/>
+
+    <bean class="cn.bugstack.springframework.test.event.ContextClosedEventListener"/>
+
     <bean id="husbandMother" class="cn.bugstack.springframework.test.bean.HusbandMother"/>
 
     <bean id="conversionService" class="cn.bugstack.springframework.context.support.ConversionServiceFactoryBean">
