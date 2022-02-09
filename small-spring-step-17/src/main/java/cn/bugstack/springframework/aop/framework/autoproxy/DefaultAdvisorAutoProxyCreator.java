@@ -9,13 +9,11 @@ import cn.bugstack.springframework.beans.factory.BeanFactory;
 import cn.bugstack.springframework.beans.factory.BeanFactoryAware;
 import cn.bugstack.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import cn.bugstack.springframework.beans.factory.support.DefaultListableBeanFactory;
+import cn.hutool.core.collection.CollectionUtil;
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInterceptor;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * BeanPostProcessor implementation that creates AOP proxies based on all candidate
@@ -95,9 +93,14 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
         //获取切点类
         Collection<AspectJExpressionPointcutAdvisor> advisors = beanFactory.getBeansOfType(AspectJExpressionPointcutAdvisor.class).values();
 
+        //限定初始代理类型
         Class targetClass = bean.getClass();
 
-        for (AspectJExpressionPointcutAdvisor advisor : advisors) {
+        //进行排序
+        List<AspectJExpressionPointcutAdvisor> sortedAdvisorList =
+            CollectionUtil.sort(advisors, (c1, c2) -> 1);
+
+        for (AspectJExpressionPointcutAdvisor advisor : sortedAdvisorList) {
             ClassFilter classFilter = advisor.getPointcut().getClassFilter();
             // 过滤匹配类
             if (!classFilter.matches(bean.getClass())) continue;

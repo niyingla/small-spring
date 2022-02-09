@@ -1,5 +1,6 @@
 package cn.bugstack.springframework.test.bean;
 
+import cn.bugstack.springframework.beans.factory.annotation.Value;
 import cn.bugstack.springframework.stereotype.Component;
 
 import java.util.Random;
@@ -10,6 +11,7 @@ import java.util.Random;
 @Component
 public class UserService implements IUserService {
 
+    @Value("${token}")
     private String token;
 
     public String queryUserInfo() {

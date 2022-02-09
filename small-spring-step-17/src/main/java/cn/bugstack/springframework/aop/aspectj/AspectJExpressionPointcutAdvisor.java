@@ -13,7 +13,7 @@ public class AspectJExpressionPointcutAdvisor implements PointcutAdvisor {
 
     // 切面
     private AspectJExpressionPointcut pointcut;
-    // 具体的拦截方法
+    // 执行具体拦截的拦截器
     private Advice advice;
     // 表达式
     private String expression;

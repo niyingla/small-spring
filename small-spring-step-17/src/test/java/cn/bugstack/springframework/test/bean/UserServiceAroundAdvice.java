@@ -1,10 +1,12 @@
 package cn.bugstack.springframework.test.bean;
 
 import cn.bugstack.springframework.aop.MethodAroundAdvice;
+import cn.bugstack.springframework.beans.factory.annotation.Order;
 import cn.bugstack.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
+@Order(-3)
 @Component("aroundAdvice")
 public class UserServiceAroundAdvice implements MethodAroundAdvice {
 
