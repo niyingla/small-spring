@@ -8,6 +8,7 @@ import cn.bugstack.springframework.beans.factory.config.BeanFactoryPostProcessor
 import cn.bugstack.springframework.core.io.DefaultResourceLoader;
 import cn.bugstack.springframework.core.io.Resource;
 import cn.bugstack.springframework.util.StringValueResolver;
+import cn.hutool.core.util.StrUtil;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -31,19 +32,12 @@ public class PropertyPlaceholderConfigurer implements BeanFactoryPostProcessor {
      */
     public static final String DEFAULT_PLACEHOLDER_SUFFIX = "}";
 
-    private String location;
+    private String locations;
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         try {
-            // 加载属性文件
-            DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
-            Resource resource = resourceLoader.getResource(location);
-
-            // 占位符替换属性值
-            Properties properties = new Properties();
-            properties.load(resource.getInputStream());
-
+            Properties properties = loadProperties();
             String[] beanDefinitionNames = beanFactory.getBeanDefinitionNames();
             //循环所有beanDefinition
             for (String beanName : beanDefinitionNames) {
@@ -71,6 +65,23 @@ public class PropertyPlaceholderConfigurer implements BeanFactoryPostProcessor {
     }
 
     /**
+     * 加载文件
+     * @return
+     * @throws IOException
+     */
+    private Properties loadProperties() throws IOException {
+        // 加载属性文件
+        DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+        Properties properties = new Properties();
+        String[] locationArr = StrUtil.split(locations, ",");
+        for (String localtion : locationArr) {
+            Resource resource = resourceLoader.getResource(localtion);
+            properties.load(resource.getInputStream());
+        }
+        return properties;
+    }
+
+    /**
      * 解析 value 并返回properties对应得值
      * @param value
      * @param properties
@@ -90,7 +101,7 @@ public class PropertyPlaceholderConfigurer implements BeanFactoryPostProcessor {
     }
 
     public void setLocation(String location) {
-        this.location = location;
+        this.locations = location;
     }
 
     private class PlaceholderResolvingStringValueResolver implements StringValueResolver {

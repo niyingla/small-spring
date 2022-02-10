@@ -16,7 +16,7 @@
 
     <!--扫描属性配置文件-->
     <bean class="cn.bugstack.springframework.beans.factory.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:token.properties"/>
+        <property name="locations" value="classpath:token.properties,classpath:info.properties"/>
     </bean>
 
     <bean id="wife" class="cn.bugstack.springframework.test.bean.Wife">
