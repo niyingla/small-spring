@@ -14,8 +14,8 @@ import cn.bugstack.springframework.stereotype.Component;
 
 @Component
 public class MyBean {
-  @Value("${token}")
-  private String token;
+  @Value("${info.test}")
+  private String info;
 
   @Autowired
   private Wife wife;
@@ -23,7 +23,7 @@ public class MyBean {
   @Override
   public String toString() {
     return "MyBean{" +
-        "token='" + token + '\'' +
+        "info='" + info + '\'' +
         ", wife=" + wife +
         '}';
   }
