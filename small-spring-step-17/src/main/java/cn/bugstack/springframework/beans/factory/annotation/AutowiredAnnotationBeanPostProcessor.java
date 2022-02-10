@@ -36,22 +36,28 @@ public class AutowiredAnnotationBeanPostProcessor implements InstantiationAwareB
     public PropertyValues postProcessPropertyValues(PropertyValues pvs, Object bean, String beanName) throws BeansException {
         // 1. 处理注解 @Value
         Class<?> clazz = bean.getClass();
+        //是否是代理类 是的话获取父类
         clazz = ClassUtils.isCglibProxyClass(clazz) ? clazz.getSuperclass() : clazz;
 
+        //获取定义字段
         Field[] declaredFields = clazz.getDeclaredFields();
 
         for (Field field : declaredFields) {
             Value valueAnnotation = field.getAnnotation(Value.class);
             if (null != valueAnnotation) {
                 Object value = valueAnnotation.value();
+                //解析得到properties的内容
                 value = beanFactory.resolveEmbeddedValue((String) value);
 
                 // 类型转换
                 Class<?> sourceType = value.getClass();
                 Class<?> targetType = (Class<?>) TypeUtil.getType(field);
+                //获取转换类
                 ConversionService conversionService = beanFactory.getConversionService();
                 if (conversionService != null) {
+                    //是否可以转换
                     if (conversionService.canConvert(sourceType, targetType)) {
+                        //进行转换
                         value = conversionService.convert(value, targetType);
                     }
                 }
