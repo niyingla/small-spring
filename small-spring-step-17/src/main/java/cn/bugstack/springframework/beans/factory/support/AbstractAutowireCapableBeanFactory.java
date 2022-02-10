@@ -71,7 +71,6 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             // 执行 Bean 的初始化方法和 BeanPostProcessor 的前置和后置处理方法
             bean = initializeBean(beanName, bean, beanDefinition);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new BeansException("Instantiation of bean failed", e);
         }
         // 注册实现了 DisposableBean 接口的 Bean 对象
@@ -260,7 +259,6 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
                  BeanUtil.setFieldValue(bean, name, value);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             throw new BeansException("Error setting property values：" + beanName + " message：" + e);
         }
     }
